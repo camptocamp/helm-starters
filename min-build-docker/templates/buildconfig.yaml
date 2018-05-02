@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: {{ include "common.name" . | quote }}
+  labels:
+{{ include "common.labels.standard" . | indent 4 }}
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: {{ printf "%s:latest" (include "common.name" .) | quote }} 
+  source:
+    git:
+      uri: {{ .Values.git.uri | quote }} 
+    sourceSecret:
+      name: {{ .Values.git.secret | quote }}
+    type: Git
+  strategy:
+    type: Docker
+  triggers:
+  - type: ConfigChange
+  - imageChange: {}
+    type: ImageChange

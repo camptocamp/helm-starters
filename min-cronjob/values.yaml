@@ -1,0 +1,4 @@
+cron:
+  schedule: "*/30 * * * *"
+  image: "yourImage"
+  command: "yourCommand"

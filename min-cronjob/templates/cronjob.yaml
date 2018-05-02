@@ -1,0 +1,19 @@
+apiVersion: batch/v2alpha1
+kind: CronJob
+metadata:
+  name: {{ include "common.name" . | quote }}
+  labels:
+{{ include "common.labels.standard" . | indent 4 }}spec:
+  schedule: {{ .Values.cron.schedule | quote }}
+  jobTemplate:             
+    spec:
+      template:
+        metadata:
+          labels:          
+            parent: "cronjob-{{ include "common.name" . }}"
+        spec:
+          containers:
+          - name: {{ include "common.name" . }}
+            image: {{ .Values.cron.image | quote }}
+            command: {{ .Values.cron.command }}
+          restartPolicy: OnFailure
