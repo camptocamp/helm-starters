@@ -3,7 +3,8 @@ kind: CronJob
 metadata:
   name: {{ include "common.name" . | quote }}
   labels:
-{{ include "common.labels.standard" . | indent 4 }}spec:
+{{ include "common.labels.standard" . | indent 4 }}
+spec:
   schedule: {{ .Values.cron.schedule | quote }}
   jobTemplate:             
     spec:
@@ -15,5 +16,6 @@ metadata:
           containers:
           - name: {{ include "common.name" . }}
             image: {{ .Values.cron.image | quote }}
-            command: {{ .Values.cron.command }}
+            command:
+{{ .Values.cron.command | indent 12 }}
           restartPolicy: OnFailure
